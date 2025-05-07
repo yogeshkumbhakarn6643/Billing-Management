@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-0semuwte-qwg7wt9uepafmpd7u4pngcrkyt7^g+00013^26#6p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*', 'https://billing-management-ld2m.onrender.com']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -61,7 +61,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 CORS_ALLOWED_ORIGINS = [
-    'https://your-frontend-site.netlify.app',
     "https://billing-management-ld2m.onrender.com"
 ]
 CORS_ALLOW_CREDENTIALS = True
@@ -69,6 +68,11 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = [
     "https://billing-management-ld2m.onrender.com " # Add if you are using a frontend
 ]
+
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 ROOT_URLCONF = 'ebs.urls'
