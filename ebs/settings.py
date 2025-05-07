@@ -86,23 +86,23 @@ WSGI_APPLICATION = 'ebs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-SECRET_KEY = "dxr#7xk%^5zi-+qj!*o2e=+!5c$3xyi0v!kfh+8=13e@0oh!)a"
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "postgres",
-        'USER': "postgres.qgiifpwakhvuguoodplw",
-        'HOST': "aws-0-ap-south-1.pooler.supabase.com",
-        'PASSWORD': "Pass@1234",
-        'PORT': "6543"
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+# SECRET_KEY = "dxr#7xk%^5zi-+qj!*o2e=+!5c$3xyi0v!kfh+8=13e@0oh!)a"
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': "postgres",
+#         'USER': "postgres.qgiifpwakhvuguoodplw",
+#         'HOST': "aws-0-ap-south-1.pooler.supabase.com",
+#         'PASSWORD': "Pass@1234",
+#         'PORT': "6543"
+#     }
+# }
 
 
 # Password validation
