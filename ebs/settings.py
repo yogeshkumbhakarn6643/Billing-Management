@@ -57,6 +57,8 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware'
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 CORS_ALLOWED_ORIGINS = [
     'https://your-frontend-site.netlify.app',
@@ -100,8 +102,10 @@ DATABASES = {
 }
 
 # Check if DATABASE_URL is set, override if present
-if os.getenv('DATABASE_URL'):
-    DATABASES['default'] = dj_database_url.config(default=os.getenv('DATABASE_URL'))
+db_url = os.getenv('DATABASE_URL')
+if db_url:
+    DATABASES['default'] = dj_database_url.config(default=db_url)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -134,8 +138,9 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATICFILES_DIRS = [BASE_DIR/'static',]
-STATIC_ROOT = BASE_DIR/'staticfiles'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
