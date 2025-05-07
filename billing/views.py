@@ -105,19 +105,36 @@ def update_unit_price(request):
     # Redirect back to wherever appropriate
     return redirect('meter_reader_home')
 
+# def pay_due_amount(request, customer_id):
+#     try:
+#         customer = Customer.objects.get(id=customer_id)
+#     except Customer.DoesNotExist:
+#         # Handle case where customer doesn't exist
+#         return redirect('customer_home', customer_id=customer_id)
+
+#     if request.method == 'POST':
+#         # Process the payment and update the database
+#         customer.due_amount = 0
+#         customer.save()
+
+#     return redirect('customer_home', customer_id=customer_id) 
+
+
 def pay_due_amount(request, customer_id):
     try:
         customer = Customer.objects.get(id=customer_id)
-    except Customer.DoesNotExist:
-        # Handle case where customer doesn't exist
-        return redirect('customer_home', customer_id=customer_id)
-
-    if request.method == 'POST':
-        # Process the payment and update the database
+        # Delete all meter readings associated with the customer
+        MeterReading.objects.filter(customer=customer).delete()
+        # Clear the due amount after deleting meter readings
         customer.due_amount = 0
         customer.save()
+        # Refresh customer data to reflect changes
+        customer.refresh_from_db()
+        return redirect('home')
+    except Customer.DoesNotExist:
+        return redirect('customer_home', customer_id=customer_id)
 
-    return redirect('customer_home', customer_id=customer_id) 
+    return redirect('customer_home', customer_id=customer_id)
 
 
 def meter_reader_home(request):
@@ -132,7 +149,7 @@ def meter_reader_home(request):
             customer.due_amount += meter_reading_value 
             customer.save()
 
-            return redirect('meter_reader_home')
+            return redirect('home')
         else:
             print("meter_reading_form.errors=>>", meter_reading_form.errors)
     else:
@@ -148,7 +165,7 @@ def create_customer(request):
         if customer_form.is_valid():
             customer_form.save()
           
-            return redirect('create_customer')  # Redirect to the same page after creating customer
+            return redirect('home')  # Redirect to the same page after creating customer
     else:
         customer_form = CustomerForm()
     return render(request, 'billing/create_customer.html', {'customer_form': customer_form})
