@@ -13,6 +13,7 @@ import dj_database_url
 import django_heroku
 import os
 from pathlib import Path
+from decouple import config
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -25,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-0semuwte-qwg7wt9uepafmpd7u4pngcrkyt7^g+00013^26#6p'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -107,15 +108,14 @@ WSGI_APPLICATION = 'ebs.wsgi.application'
 # }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'HOST': config('DB_HOST'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'PORT': config('DB_PORT')
     }
 }
-
-# Check if DATABASE_URL is set, override if present
-db_url = os.getenv('DATABASE_URL')
-if db_url:
-    DATABASES['default'] = dj_database_url.config(default=db_url)
 
 
 # Password validation
